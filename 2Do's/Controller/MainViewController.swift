@@ -11,7 +11,7 @@ import UIKit
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     // MARK - instance variables:
-    let itemArray = ["Apples", "Oranges", "Bananas"]
+    var itemArray = ["Apples", "Oranges", "Bananas"]
     
     // MARK - outlets:
     @IBOutlet weak var listTableView: UITableView!
@@ -77,7 +77,50 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
-    // MARK - actions:
-
+    // Adding list item...
+    @IBAction func addButtonPressed(_ sender: UIButton) {
+        
+        // creating a textField variable that can be accessed throughout this func's scope:
+        var textField = UITextField()
+        
+        // pop-up to show w textField
+        let alert = UIAlertController(title: "What do you need to do?", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Add", style: .default) { (action) in
+            
+            // append item to end of itemArray
+            self.itemArray.append(textField.text!)
+            
+            // updating the listTableView content:
+            self.listTableView.reloadData()
+        }
+        
+        // adding the action to alert...
+        alert.addAction(action)
+        
+        // adding a text-field to alert...
+        alert.addTextField { (alertTextField) in
+            // accessing the textField's properties:
+            alertTextField.placeholder = "Create new to-do"
+            textField = alertTextField
+        }
+        
+        // presenting alert (UIAlertController) when addButtonPressed:
+        present(alert, animated: true, completion: nil)
+        
+    }
+    
     
 }
+
+
+
+
+
+
+
+
+
+
+
+
