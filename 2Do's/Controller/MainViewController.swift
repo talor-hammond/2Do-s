@@ -10,13 +10,11 @@ import UIKit
 
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    // MARK - instance variables:
     var itemArray = [Item]()
     let itemArrayKey = "ToDoItemArray"
     
-    
-    // setting a user-defaults object, defaults:
-    let defaults = UserDefaults.standard
+    // creating a filepath for data to be saved to:
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist") // appending the path with a new component.
     
     // MARK - outlets:
     @IBOutlet weak var listTableView: UITableView!
@@ -25,30 +23,16 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let newItem = Item()
-        newItem.title = "1"
-        itemArray.append(newItem)
-
-        let newItem2 = Item()
-        newItem2.title = "123"
-        itemArray.append(newItem2)
-
-        let newItem3 = Item()
-        newItem3.title = "12345"
-        itemArray.append(newItem3)
         
         // setting the ViewController as the tableView delegate / datasource:
         listTableView.delegate = self
         listTableView.dataSource = self
-        
-        // defining the itemArray with the stored data in defaults
-//        if let items = (defaults.array(forKey: itemArrayKey) as? [Item]) { // assigning a constant to the array only if there is a value
-//            itemArray = items
-//        }
-        
+                
         // configuring the height of the tableView cells:
         configureTableView()
+        
+        // TODO: append the itemArray with data pulled from library
+        loadItems()
         
     }
     
@@ -85,7 +69,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         // alternating the "completed" property of the Item():
         itemArray[indexPath.row].completed = !itemArray[indexPath.row].completed
         
-        tableView.reloadData()
+        saveItems() // updates the changes to the property of the Item when selected.
         
     }
     
@@ -115,11 +99,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
             // append item to end of itemArray
             self.itemArray.append(newItem)
             
-            // saving to the defaults UserDefaults object:
-            self.defaults.set(self.itemArray, forKey: self.itemArrayKey)
+            self.saveItems()
             
-            // updating the listTableView content:
-            self.listTableView.reloadData()
         }
         
         // adding the action to alert...
@@ -137,6 +118,37 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
     }
     
+    // saveItems & reloadData method:
+    func saveItems() {
+        
+        // creating an encoder object:
+        let encoder = PropertyListEncoder()
+        
+        // encoding data...
+        do {
+            let data = try encoder.encode(itemArray)
+            try data.write(to: dataFilePath!)
+        } catch {
+            print("Error encoding item array -- \(error)")
+        }
+        
+        // updating the listTableView content:
+        listTableView.reloadData()
+        
+    }
+    
+    func loadItems() {
+        
+        if let data = try? Data(contentsOf: dataFilePath!) { // optional binding:
+            let decoder = PropertyListDecoder()
+            do {
+                itemArray = try decoder.decode([Item].self, from: data)
+            } catch {
+                print("Failed to decode data, \(error)")
+            }
+        }
+        
+    }
     
 }
 
