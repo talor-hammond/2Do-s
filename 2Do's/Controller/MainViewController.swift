@@ -11,18 +11,41 @@ import UIKit
 class MainViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     // MARK - instance variables:
-    var itemArray = ["Apples", "Oranges", "Bananas"]
+    var itemArray = [Item]()
+    let itemArrayKey = "ToDoItemArray"
+    
+    
+    // setting a user-defaults object, defaults:
+    let defaults = UserDefaults.standard
     
     // MARK - outlets:
     @IBOutlet weak var listTableView: UITableView!
-    
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let newItem = Item()
+        newItem.title = "1"
+        itemArray.append(newItem)
+
+        let newItem2 = Item()
+        newItem2.title = "123"
+        itemArray.append(newItem2)
+
+        let newItem3 = Item()
+        newItem3.title = "12345"
+        itemArray.append(newItem3)
+        
         // setting the ViewController as the tableView delegate / datasource:
         listTableView.delegate = self
         listTableView.dataSource = self
+        
+        // defining the itemArray with the stored data in defaults
+//        if let items = (defaults.array(forKey: itemArrayKey) as? [Item]) { // assigning a constant to the array only if there is a value
+//            itemArray = items
+//        }
         
         // configuring the height of the tableView cells:
         configureTableView()
@@ -40,7 +63,12 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "itemCell", for: indexPath)
         
-        cell.textLabel?.text = itemArray[indexPath.row]
+        let item = itemArray[indexPath.row]
+        
+        cell.textLabel?.text = item.title
+        
+        // dynamic accessory type:
+        cell.accessoryType = item.completed ? .checkmark : .none
         
         return cell
         
@@ -54,17 +82,10 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         // negating the permanent highlight:
         listTableView.deselectRow(at: indexPath, animated: true)
         
-        // adding / removing a checkmark accessory:
-        if listTableView.cellForRow(at: indexPath)?.accessoryType == .checkmark {
-            
-            listTableView.cellForRow(at: indexPath)?.accessoryType = .none
-            
-        }
-        else {
-            
-            listTableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
-            
-        }
+        // alternating the "completed" property of the Item():
+        itemArray[indexPath.row].completed = !itemArray[indexPath.row].completed
+        
+        tableView.reloadData()
         
     }
     
@@ -88,8 +109,14 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             
+            let newItem = Item()
+            newItem.title = textField.text!
+            
             // append item to end of itemArray
-            self.itemArray.append(textField.text!)
+            self.itemArray.append(newItem)
+            
+            // saving to the defaults UserDefaults object:
+            self.defaults.set(self.itemArray, forKey: self.itemArrayKey)
             
             // updating the listTableView content:
             self.listTableView.reloadData()

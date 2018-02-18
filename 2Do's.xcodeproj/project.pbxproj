@@ -12,6 +12,7 @@
 		73BF7BFE203457D500F3EE95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 73BF7BFD203457D500F3EE95 /* Assets.xcassets */; };
 		73BF7C01203457D500F3EE95 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73BF7BFF203457D500F3EE95 /* LaunchScreen.storyboard */; };
 		73BF7C112035730C00F3EE95 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BF7C102035730C00F3EE95 /* MainViewController.swift */; };
+		73BF7C152039086A00F3EE95 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73BF7C142039086A00F3EE95 /* Item.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		73BF7C00203457D500F3EE95 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		73BF7C02203457D500F3EE95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		73BF7C102035730C00F3EE95 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		73BF7C142039086A00F3EE95 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 		73BF7BF5203457D500F3EE95 /* 2Do's */ = {
 			isa = PBXGroup;
 			children = (
+				73BF7BF6203457D500F3EE95 /* AppDelegate.swift */,
 				73BF7C0B2034580D00F3EE95 /* Model */,
 				73BF7C0A2034580600F3EE95 /* View */,
 				73BF7C092034580200F3EE95 /* Controller */,
@@ -74,7 +77,6 @@
 		73BF7C092034580200F3EE95 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				73BF7BF6203457D500F3EE95 /* AppDelegate.swift */,
 				73BF7C102035730C00F3EE95 /* MainViewController.swift */,
 			);
 			path = Controller;
@@ -92,6 +94,7 @@
 		73BF7C0B2034580D00F3EE95 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				73BF7C142039086A00F3EE95 /* Item.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -169,6 +172,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				73BF7C112035730C00F3EE95 /* MainViewController.swift in Sources */,
+				73BF7C152039086A00F3EE95 /* Item.swift in Sources */,
 				73BF7BF7203457D500F3EE95 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
