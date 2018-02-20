@@ -14,7 +14,7 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
     let itemArrayKey = "ToDoItemArray"
     
     // creating a filepath for data to be saved to:
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist") // appending the path with a new component.
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appendingPathComponent("Items.plist") // appending the path with a new component; ability to encode / decode data to specific .plist files.
     
     // MARK - outlets:
     @IBOutlet weak var listTableView: UITableView!
@@ -117,6 +117,8 @@ class MainViewController: UIViewController, UITableViewDelegate, UITableViewData
         present(alert, animated: true, completion: nil)
         
     }
+    
+    // MARK: NSCoder; encoder / decoder methods
     
     // saveItems & reloadData method:
     func saveItems() {
