@@ -13,7 +13,6 @@ class ToDoListViewController: UIViewController {
 
     // shared variables / constants:
     var itemArray = [ToDoItem]()
-    let itemArrayKey = "ToDoItemArray"
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     // creating a filepath for data to be saved to / access to SQLite database:
@@ -42,8 +41,9 @@ class ToDoListViewController: UIViewController {
     }
     
     // MARK: Adding ToDoItem object to database...
-    @IBAction func addButtonPressed(_ sender: UIButton) {
-        
+
+    @IBAction func addButtonPressed(_ sender: Any) {
+    
         // creating a textField variable that can be accessed throughout this func's scope:
         var textField = UITextField()
         
@@ -62,8 +62,8 @@ class ToDoListViewController: UIViewController {
             
             // saving ToDoItem context to the database...
             self.saveItems()
-            
-        }
+
+    }
         
         // adding the action to alert...
         alert.addAction(action)
@@ -172,6 +172,12 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
 // MARK: searchBar methods -
 extension ToDoListViewController: UISearchBarDelegate {
     
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        
+        // TODO: searchBar to bottom; move up with keyboard when editing begins.
+        
+    }
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         
         let request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()
@@ -184,6 +190,21 @@ extension ToDoListViewController: UISearchBarDelegate {
         
         loadItems(with: request)
         
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 { // when the textDidChange - & then gone down to 0:
+    
+            // load default request for items:
+            loadItems()
+            
+            DispatchQueue.main.async { // assigning edit to ui into background thread:
+                
+                searchBar.resignFirstResponder() // ...searchBar should no longer be the selected "thing"
+                
+            }
+            
+        }
     }
     
 }
