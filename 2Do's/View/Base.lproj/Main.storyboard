@@ -9,11 +9,16 @@
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue-Bold</string>
+        </array>
+    </customFonts>
     <scenes>
-        <!--Main View Controller-->
+        <!--To Do List View Controller-->
         <scene sceneID="RPx-4c-hkM">
             <objects>
-                <viewController id="nJJ-y1-daC" customClass="MainViewController" customModule="_Do_s" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="nJJ-y1-daC" customClass="ToDoListViewController" customModule="_Do_s" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="7cd-HA-Hu3">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -28,12 +33,26 @@
                                             <action selector="addButtonPressed:" destination="nJJ-y1-daC" eventType="touchUpInside" id="h34-Xh-gYV"/>
                                         </connections>
                                     </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2Do" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fyP-ga-tKr">
+                                        <rect key="frame" x="154" y="11" width="67" height="42"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="42" id="gnu-3y-ttd"/>
+                                            <constraint firstAttribute="width" relation="lessThanOrEqual" constant="67" id="iR2-qc-gvA"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="35"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="1" green="0.2527923882" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="trailing" secondItem="gmV-X9-PY3" secondAttribute="trailing" constant="20" id="0QV-fJ-2D4"/>
                                     <constraint firstItem="gmV-X9-PY3" firstAttribute="top" secondItem="3X4-ne-5ko" secondAttribute="top" constant="21" id="82J-Tt-CAh"/>
                                     <constraint firstAttribute="bottom" secondItem="gmV-X9-PY3" secondAttribute="bottom" constant="21" id="ASi-y1-GHh"/>
+                                    <constraint firstItem="gmV-X9-PY3" firstAttribute="leading" secondItem="fyP-ga-tKr" secondAttribute="trailing" constant="112" id="KQb-2R-Lgw"/>
+                                    <constraint firstItem="fyP-ga-tKr" firstAttribute="leading" secondItem="3X4-ne-5ko" secondAttribute="leading" constant="154" id="LZc-tu-xAc"/>
+                                    <constraint firstAttribute="bottom" secondItem="fyP-ga-tKr" secondAttribute="bottom" constant="11" id="Wpm-7F-eE8"/>
+                                    <constraint firstItem="fyP-ga-tKr" firstAttribute="top" secondItem="3X4-ne-5ko" secondAttribute="top" constant="11" id="sfe-Ya-Xth"/>
                                 </constraints>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="GD4-La-tsO">
@@ -50,6 +69,10 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="WqT-Yb-0md">
+                                <rect key="frame" x="0.0" y="611" width="375" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -59,13 +82,17 @@
                             <constraint firstItem="GD4-La-tsO" firstAttribute="leading" secondItem="VpL-av-gAL" secondAttribute="leading" id="UXu-M9-cAC"/>
                             <constraint firstItem="3X4-ne-5ko" firstAttribute="top" secondItem="7cd-HA-Hu3" secondAttribute="top" id="bdW-1z-S5J"/>
                             <constraint firstItem="GD4-La-tsO" firstAttribute="bottom" secondItem="VpL-av-gAL" secondAttribute="bottom" id="brZ-t0-JwS"/>
+                            <constraint firstItem="VpL-av-gAL" firstAttribute="bottom" secondItem="WqT-Yb-0md" secondAttribute="bottom" id="fxG-ZG-1l8"/>
+                            <constraint firstItem="WqT-Yb-0md" firstAttribute="leading" secondItem="VpL-av-gAL" secondAttribute="leading" id="sMb-iw-XkP"/>
                             <constraint firstItem="GD4-La-tsO" firstAttribute="top" secondItem="VpL-av-gAL" secondAttribute="top" constant="43" id="xia-hb-82X"/>
                             <constraint firstItem="3X4-ne-5ko" firstAttribute="trailing" secondItem="VpL-av-gAL" secondAttribute="trailing" id="xkx-zZ-i8I"/>
+                            <constraint firstItem="WqT-Yb-0md" firstAttribute="trailing" secondItem="VpL-av-gAL" secondAttribute="trailing" id="yzQ-Gy-df1"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="VpL-av-gAL"/>
                     </view>
                     <connections>
                         <outlet property="listTableView" destination="GD4-La-tsO" id="gDv-Gz-Icg"/>
+                        <outlet property="searchBar" destination="WqT-Yb-0md" id="XmD-QH-5Hv"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fQF-4S-C5E" userLabel="First Responder" sceneMemberID="firstResponder"/>
