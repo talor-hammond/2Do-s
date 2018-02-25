@@ -10,10 +10,19 @@ import UIKit
 import CoreData
 
 class ToDoListViewController: UIViewController {
-
-    // shared variables / constants:
+    
+    // shared properties:
     var itemArray = [ToDoItem]()
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    
+    var selectedCategory: Category? {
+        didSet { // starts when a value for optional selectedCategory has been set:
+            // setting navigationItem.title as the selectedCategory's name property
+            self.navigationItem.title = selectedCategory?.name
+            
+            loadItems()
+        }
+    }
     
     // creating a filepath for data to be saved to / access to SQLite database:
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
@@ -32,18 +41,16 @@ class ToDoListViewController: UIViewController {
         listTableView.dataSource = self
         
         searchBar.delegate = self
-                
+        
         // configuring the height of the tableView cells:
         configureTableView()
-        
-        loadItems()
         
     }
     
     // MARK: Adding ToDoItem object to database...
-
-    @IBAction func addButtonPressed(_ sender: Any) {
     
+    @IBAction func addButtonPressed(_ sender: Any) {
+        
         // creating a textField variable that can be accessed throughout this func's scope:
         var textField = UITextField()
         
@@ -56,14 +63,16 @@ class ToDoListViewController: UIViewController {
             // filling non-optional "fields"...
             newItem.title = textField.text!
             newItem.completed = false
+            // assigning a category...
+            newItem.parentCategory? = self.selectedCategory!
             
             // append NSManagedObject to end of itemArray [NSManagedObject]
             self.itemArray.append(newItem)
             
             // saving ToDoItem context to the database...
             self.saveItems()
-
-    }
+            
+        }
         
         // adding the action to alert...
         alert.addAction(action)
@@ -85,11 +94,11 @@ class ToDoListViewController: UIViewController {
     func saveItems() {
         
         do {
-
+            
             try context.save()
             
         } catch {
-        
+            
             print("Error saving context: \(error)")
             
         }
@@ -99,11 +108,20 @@ class ToDoListViewController: UIViewController {
         
     }
     
-    func loadItems(with request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest()) {
+    func loadItems(with request: NSFetchRequest<ToDoItem> = ToDoItem.fetchRequest(), predicate: NSPredicate? = nil) {
+        
+        // loading items; filtering by selectedCategory -
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+        
+        if let searchPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, searchPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
         
         do {
             // fetching all the ToDoItem objects and assigning them to itemArray:
-        itemArray = try context.fetch(request)
+            itemArray = try context.fetch(request)
         } catch {
             print("Error fetching data: \(error)")
         }
@@ -165,7 +183,7 @@ extension ToDoListViewController: UITableViewDelegate, UITableViewDataSource {
         listTableView.estimatedRowHeight = 100.0
         
     }
-
+    
     
 }
 
@@ -194,7 +212,7 @@ extension ToDoListViewController: UISearchBarDelegate {
     
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text?.count == 0 { // when the textDidChange - & then gone down to 0:
-    
+            
             // load default request for items:
             loadItems()
             

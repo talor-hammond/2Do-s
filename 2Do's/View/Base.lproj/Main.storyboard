@@ -42,7 +42,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="nJJ-y1-daC" kind="show" id="bjh-R2-9M7"/>
+                        <segue destination="nJJ-y1-daC" kind="show" identifier="goToItems" id="bjh-R2-9M7"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kOL-Ks-zfa" userLabel="First Responder" sceneMemberID="firstResponder"/>
