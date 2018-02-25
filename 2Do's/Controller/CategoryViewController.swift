@@ -12,52 +12,74 @@ import CoreData
 class CategoryViewController: UITableViewController {
 
     var categoryArray = [Category]()
+
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        loadItems()
+        loadCategories()
         
     }
     
     // MARK: Data manipulation methods -
+
+    func saveCategories() {
+        
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context: \(error)")
+        }
+        
+    }
+    
+    func loadCategories() {
+        
+        let request: NSFetchRequest<Category> = Category.fetchRequest()
+        
+        do {
+        categoryArray = try context.fetch(request)
+        } catch {
+            print("Error loading categories: \(error)")
+        }
+        
+        tableView.reloadData()
+        
+    }
+        
+    // MARK: adding a new category -
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
         
-        // creating a textField variable that can be accessed throughout this func's scope:
         var textField = UITextField()
-        
-        // pop-up to show w textField
+
         let alert = UIAlertController(title: "Add a new category", message: "", preferredStyle: .alert)
         
         let action = UIAlertAction(title: "Add", style: .default) { (action) in
             
+            // what should happen when the user clicks "Add"
             let newCategory = Category(context: self.context)
-            // choosing a category name:
             newCategory.name = textField.text!
             
-            // append NSManagedObject to end of categoryArray [NSManagedObject]
             self.categoryArray.append(newCategory)
             
-            // saving ToDoItem context to the database...
-            self.saveItems()
+            self.saveCategories()
             
         }
         
-        // adding the action to alert...
         alert.addAction(action)
         
-        // adding a text-field to alert...
-        alert.addTextField { (alertTextField) in
-            // accessing the textField's properties:
-            alertTextField.placeholder = "School, work, etc."
-            textField = alertTextField
+        // adding a textfield to the alert pop-up...
+        alert.addTextField { (field) in
+            
+            textField = field
+            textField.placeholder = "School, work, shopping, etc."
+            
         }
         
-        // presenting alert (UIAlertController) when addButtonPressed:
         present(alert, animated: true, completion: nil)
-
+        
     }
     
 }
@@ -81,29 +103,23 @@ extension CategoryViewController {
         
     }
     
-    // MARK: Methods for saving / loading ToDoItem object:
-    
-    func saveItems() {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        do {
-            try context.save()
-        } catch {
-            print("Error saving context: \(error)")
-        }
-        
-        // updating content:
-        tableView.reloadData()
+        performSegue(withIdentifier: "goToItems", sender: self)
+        // TODO: go to whatever category is selected -
         
     }
     
-    func loadItems(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        do {
-            // fetching all the ToDoItem objects and assigning them to categoryArray:
-            categoryArray = try context.fetch(request)
-        } catch {
-            print("Error fetching data: \(error)")
+        let destinationVC = segue.destination as! ToDoListViewController
+        
+        if let indexPath = tableView.indexPathForSelectedRow {
+            
+            destinationVC.selectedCategory = categoryArray[indexPath.row]
+            
         }
+        
     }
     
 }
