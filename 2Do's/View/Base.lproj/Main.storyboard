@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--2Do-->
+        <!--Categories-->
         <scene sceneID="Y3y-Se-iVE">
             <objects>
                 <tableViewController id="v2K-Lx-NSD" customClass="CategoryViewController" customModule="_Do_s" customModuleProvider="target" sceneMemberID="viewController">
@@ -33,7 +33,7 @@
                             <outlet property="delegate" destination="v2K-Lx-NSD" id="Run-iV-Cj4"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="2Do" id="efp-UC-rKG">
+                    <navigationItem key="navigationItem" title="Categories" id="efp-UC-rKG">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="ttP-C6-vfW">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
@@ -42,7 +42,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <segue destination="nJJ-y1-daC" kind="show" id="bjh-R2-9M7"/>
+                        <segue destination="nJJ-y1-daC" kind="show" identifier="goToItems" id="bjh-R2-9M7"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kOL-Ks-zfa" userLabel="First Responder" sceneMemberID="firstResponder"/>
