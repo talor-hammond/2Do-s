@@ -13,6 +13,6 @@ class Category: Object {
     
     @objc dynamic var name: String = ""
     // establishing parent-child relationship (one-to-many):
-    var items = List<ToDoItem>()
+    let items = List<ToDoItem>()
 }
 
